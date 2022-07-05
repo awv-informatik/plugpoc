@@ -44,7 +44,7 @@ export default function App() {
   return (
     <div className="App">
       <div style={{ paddingLeft: '50px' }}>
-        <h1>Plug POC</h1>
+        <h2>Plug POC</h2>
         {drawingId && <Expressions drawingId={drawingId} />}
       </div>
       <div className="Container">
