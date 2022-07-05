@@ -3,7 +3,7 @@
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
-    "lib": ["es5", "es2015.promise", "scripthost", "dom"],
+    "lib": ["esnext", "scripthost", "dom"],
     "outDir": "build",
     "baseUrl": "./",
     "jsx": "react-jsx",
