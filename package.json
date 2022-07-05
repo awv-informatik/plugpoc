@@ -1,0 +1,45 @@
+{
+  "name": "@plugpoc/root",
+  "private": true,
+  "scripts": {
+    "postinstall": "npx lerna bootstrap",
+    "clean": "rimraf ./packages/*/dist && rimraf ./packages/*/build",
+    "clean:nm": "npx rimraf ./packages/*/node_modules && npx rimraf ./node_modules",
+    "build": "tsc --build",
+    "build:watch": "tsc --build --watch",
+    "lint": "yarn workspaces run lint",
+    "test": "yarn workspaces run test",
+    "start": "concurrently \"npm run start:web\" \"npm run start:cad\"",
+    "start:web": "yarn workspace @plugpoc/web start",
+    "start:cad": "yarn workspace @plugpoc/cad start",
+    "prettify": "npx prettier . --write"
+  },
+  "devDependencies": {
+    "@types/node": "16.4.10",
+    "@typescript-eslint/eslint-plugin": "5.21.0",
+    "@typescript-eslint/parser": "5.21.0",
+    "concurrently": "6.4.0",
+    "eslint": "8.0.0",
+    "eslint-config-prettier": "8.3.0",
+    "eslint-formatter-codeframe": "7.32.1",
+    "eslint-plugin-no-only-tests": "2.6.0",
+    "eslint-plugin-prettier": "4.0.0",
+    "eslint-plugin-react": "7.26.1",
+    "eslint-plugin-react-hooks": "4.2.0",
+    "lerna": "4.0.0",
+    "prettier": "2.4.0",
+    "rimraf": "3.0.2",
+    "typescript": "4.4.4"
+  },
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ],
+    "nohoist": [
+      "@plugpoc/web/react",
+      "@plugpoc/web/react-dom",
+      "@plugpoc/web/react-scripts",
+      "**/@classcad/**"
+    ]
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "lib": ["es5", "es2015.promise", "scripthost", "dom"],
+    "outDir": "build",
+    "baseUrl": "./",
+    "jsx": "react-jsx",
+    "allowJs": false,
+    "declaration": true,
+    "preserveConstEnums": true,
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "noImplicitAny": true,
+    "strictFunctionTypes": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "isolatedModules": true,
+    "noEmit": true,
+    "downlevelIteration": true,
+    "noFallthroughCasesInSwitch": true,
+    "importsNotUsedAsValues": "preserve",
+    "suppressImplicitAnyIndexErrors": true
+  },
+  "include": ["./src/**/*"]
+}

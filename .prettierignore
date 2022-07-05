@@ -1,0 +1,5 @@
+data
+dist
+build
+node_modules
+/tsconfig.base.json

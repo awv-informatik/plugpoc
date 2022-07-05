@@ -1,0 +1,35 @@
+FROM ubuntu:18.04
+
+# Install linux dependencies
+RUN apt-get update && apt-get install -y \
+    libicu60 \
+    libglu1-mesa-dev \
+    ocl-icd-opencl-dev \
+    locales
+
+# Language settings
+ENV LANG C
+ENV LANGUAGE C
+ENV LC_ALL C
+
+# Install node and npm
+RUN apt-get install -y curl
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash
+RUN apt-get install -y nodejs
+
+# Install ClassCAD
+ENV SERVER_DIR /cad
+RUN mkdir -p $SERVER_DIR
+WORKDIR $SERVER_DIR
+
+COPY ./package.json  $SERVER_DIR/package.json
+RUN npm i
+RUN chmod +x ./node_modules/@classcad/linux-x64/ClassCADInstance
+
+COPY ./*.ccapp $SERVER_DIR
+
+# Copy runtimes to libs
+RUN cp ./node_modules/@classcad/linux-x64/libboost_thread.so.1.65.1 /lib/x86_64-linux-gnu
+
+# Start the server
+CMD npm run start:linux

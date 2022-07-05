@@ -1,0 +1,15 @@
+{
+  "extends": ["../../.eslintrc", "plugin:react/recommended"],
+  "plugins": ["react-hooks", "no-only-tests"],
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  "rules": {
+    "react-hooks/rules-of-hooks": "warn",
+    "react-hooks/exhaustive-deps": "warn",
+    "react/prop-types": "off",
+    "react/react-in-jsx-scope": "off"
+  }
+}

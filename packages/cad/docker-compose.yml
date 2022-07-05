@@ -1,0 +1,20 @@
+version: "3.5"
+
+services:
+  plugpoc-cad:
+    build:
+      context: ./
+      dockerfile: dockerfile
+    image: plugpoc/cad
+    container_name: plugpoc-cad
+    tty: true
+    stdin_open: true
+    networks:
+      - plugpoc-cad-network
+    ports:
+      - 8182:8182 # ClassCAD Server
+    restart: unless-stopped
+
+networks:
+  plugpoc-cad-network:
+    name: plugpoc-network
