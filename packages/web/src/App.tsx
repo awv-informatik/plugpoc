@@ -14,17 +14,19 @@ const { run } = create()
 const Expressions: React.FC<{ drawingId: DrawingID }> = props => {
   const { drawingId } = props
   const partId = useDrawing(drawingId, d => d.structure.root) || 0
-  const { names, details } = useExpressions(drawingId, partId, run)
+  const expressions = useExpressions(drawingId, partId)
   return (
     <>
-      {names.map(name => (
-        <div key={name} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', width: '200px' }}>
-          <div>{name}</div>
+      {expressions.map(expr => (
+        <div key={expr.name} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', width: '200px' }}>
+          <div>{expr.name}</div>
           <input
-            type={'number'}
-            defaultValue={details[name].value}
+            defaultValue={expr.value as any}
             onBlur={e =>
-              Number(details[name].value) !== Number(e.target.value) && details[name].onChange(name, e.target.value)
+              expr.value?.toString() !== e.target.value.toString() &&
+              run(async api => {
+                api.setExpressions(partId, { name: expr.name, value: e.target.value })
+              })
             }></input>
         </div>
       ))}
