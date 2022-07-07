@@ -1,7 +1,6 @@
 /* eslint-disable no-shadow */
 import { init, SocketIOClient } from '@buerli.io/classcad'
 import { ApiHistory, history } from '@buerli.io/headless'
-import { suspend } from 'suspend-react'
 
 /////////////////////////////////////////////////
 // Init connection between Buerli and ClassCAD //
@@ -15,21 +14,15 @@ init(id => new SocketIOClient(CCSERVERURL, id), {
 /////////////////////////////////////////////////
 // Buerli API creator function
 //   - Creates the history api instance
-//   - Wraps the history into a suspense mechanism
 //   - Taken from an other proof of concept
 /////////////////////////////////////////////////
 
-type Tuple<T = any> = [T] | T[]
 type Await<T> = T extends Promise<infer V> ? V : never
 
 const create = <Return = ApiHistory>() => {
   const instance = new history()
   const api = new Promise<Return>(res => instance.init(api => res(api as unknown as Return)))
   return {
-    cache: <Keys extends Tuple<unknown>, Fn extends (api: Return, ...keys: Keys) => Promise<unknown>>(
-      callback: Fn,
-      dependencies: Keys,
-    ) => suspend(async (...keys: Keys) => callback(await api, ...keys) as Await<ReturnType<Fn>>, dependencies),
     run: async <Fn extends (api: Return) => Promise<unknown>>(callback: Fn) =>
       callback(await api) as Await<ReturnType<Fn>>,
   }
