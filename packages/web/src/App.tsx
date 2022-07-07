@@ -39,7 +39,7 @@ export default function App() {
 
   React.useEffect(() => {
     run(async api => {
-      await api.loadFromUrl('https://raw.githubusercontent.com/awv-informatik/buerligons/main/samples/Clamp.of1', 'of1')
+      await api.loadFromUrl('https://raw.githubusercontent.com/awv-informatik/plugpoc/main/models/Box.of1', 'of1')
     })
   }, [])
 
