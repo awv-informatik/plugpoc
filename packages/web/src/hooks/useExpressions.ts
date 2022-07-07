@@ -20,7 +20,7 @@ export const useExpressions = (drawingId: DrawingID, partId: ObjectID) => {
     const exprNames = Object.getOwnPropertyNames(expressionMems || {})
     const visibleExpr = exprNames.filter(name => expressionMems?.[name].visible)
     return visibleExpr.map(name => ({ name, value: expressionMems?.[name]?.value }))
-  }, [expressionMems, partId])
+  }, [expressionMems])
 
   return expressions
 }
