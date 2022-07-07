@@ -9,6 +9,9 @@ import { useExpressions } from './hooks/useExpressions'
 import './styles.css'
 import { create } from './wrapper'
 
+const FILE_URL = 'https://raw.githubusercontent.com/awv-informatik/plugpoc/main/models/Box.of1'
+const FILE_TYPE = 'of1'
+
 const { run } = create()
 
 const Expressions: React.FC<{ drawingId: DrawingID }> = props => {
@@ -38,9 +41,7 @@ export default function App() {
   const drawingId = useBuerli(state => state.drawing.active)
 
   React.useEffect(() => {
-    run(async api => {
-      await api.loadFromUrl('https://raw.githubusercontent.com/awv-informatik/plugpoc/main/models/Box.of1', 'of1')
-    })
+    run(async api => api.loadFromUrl(FILE_URL, FILE_TYPE))
   }, [])
 
   return (
