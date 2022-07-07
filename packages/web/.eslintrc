@@ -1,5 +1,5 @@
 {
-  "extends": ["../../.eslintrc", "plugin:react/recommended"],
+  "extends": ["../../.eslintrc"],
   "plugins": ["react-hooks", "no-only-tests"],
   "settings": {
     "react": {
