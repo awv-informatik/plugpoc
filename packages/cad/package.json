@@ -13,7 +13,7 @@
     "start:linux": "node ./node_modules/@classcad/linux-x64/bin.js --ip 0.0.0.0 --port 8182 --instances 1 --ccappfile ./BaseModeling.ccapp"
   },
   "dependencies": {
-    "@classcad/windows-x64": "0.0.0-beta.12",
-    "@classcad/linux-x64": "0.0.0-beta.12"
+    "@classcad/windows-x64": "0.0.0-beta.13",
+    "@classcad/linux-x64": "0.0.0-beta.13"
   }
 }

@@ -1113,12 +1113,12 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@buerli.io/classcad@0.3.0-beta.1":
-  version "0.3.0-beta.1"
-  resolved "https://registry.yarnpkg.com/@buerli.io/classcad/-/classcad-0.3.0-beta.1.tgz#94f5a9f4e022a041a69969bdb5774aa15f73adb9"
-  integrity sha512-WFBadgvme/UnfgKM3gO6Xl5K1mmJ5fPY0MlKi4EcUzl+uOUIkaDAJgvkpryBWUPgE5kPbKojiDpRHpiRZBerUQ==
+"@buerli.io/classcad@0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@buerli.io/classcad/-/classcad-0.3.0.tgz#d47edd55eeeaa323769c75cb25fb4a3660ca947f"
+  integrity sha512-jwJu/aI0pK9LIdMliR8330N4q39wRuMl9LSkO6vBpXjArdaWFTdXQ14LHiDiA2AVJ+pXcXokBWdPCbOseNZang==
   dependencies:
-    "@buerli.io/core" "0.3.0-beta.1"
+    "@buerli.io/core" "0.3.0"
     base64-arraybuffer "^0.2.0"
     comlink "^4.3.1"
     js-untar "^2.0.0"
@@ -1129,31 +1129,31 @@
     strict-event-emitter-types "^2.0.0"
     uuid "^3.3.2"
 
-"@buerli.io/core@0.3.0-beta.1":
-  version "0.3.0-beta.1"
-  resolved "https://registry.yarnpkg.com/@buerli.io/core/-/core-0.3.0-beta.1.tgz#5d58e25e8506386b69d7304da0647aacf2f7d5b8"
-  integrity sha512-ayJzkbyuZ03MYvdq2gc8VsQtVYfYWoovUAYDYaaaWJbOnat3S1/RXq4oCE5fWJEjD/wLvWimpD8HpMoOj8nazg==
+"@buerli.io/core@0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@buerli.io/core/-/core-0.3.0.tgz#0942982b34af48a64c4945f9ad3fcff48a7571a7"
+  integrity sha512-heWc01OqLCzaV8PaCbWDuMIp83//8PRSuZpOVMNxCwExGOQ52V16KEr2XLgqFkGOS43DUwAbel1xEhLIZa9/2Q==
   dependencies:
     fast-json-patch "^3.1.1"
     jsonpatch "^3.1.0"
     uuid "^3.3.2"
     zustand "^3.5.7"
 
-"@buerli.io/headless@0.3.0-beta.1":
-  version "0.3.0-beta.1"
-  resolved "https://registry.yarnpkg.com/@buerli.io/headless/-/headless-0.3.0-beta.1.tgz#6c03dea6afdee07417a86abc12761291bee9ee64"
-  integrity sha512-ukmt/lCVVrszi377wTrKwq800ar5DI4WM05x1R45nnVLDffuCDSDi16W77fcMrbgM+A+T9SNgRKToErjDxdrOQ==
+"@buerli.io/headless@0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@buerli.io/headless/-/headless-0.3.0.tgz#a5c97646eee8edaba39f4fb8cc5ea19592c66022"
+  integrity sha512-hKqm+s4sZKbJyAiZeZuPqsQzGJn68c/TGbclIqlfcmb9YXQA1snO7MOgOvR+1gAMvSHdXwGarxBrabOBi4gZ9g==
   dependencies:
-    "@buerli.io/classcad" "0.3.0-beta.1"
+    "@buerli.io/classcad" "0.3.0"
     flat-promise "^1.0.3"
 
-"@buerli.io/react@0.3.0-beta.1":
-  version "0.3.0-beta.1"
-  resolved "https://registry.yarnpkg.com/@buerli.io/react/-/react-0.3.0-beta.1.tgz#d4e2309e6eb299252bc3099e4e11df1663ee569f"
-  integrity sha512-FHchKgQ26vd4cPIlpdI5miWljMlv/rZf1rDYj12EZV9R/umlkCkeanwQ8jIciDjdRRohHbkPnHe5r3t4HZLCkw==
+"@buerli.io/react@0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@buerli.io/react/-/react-0.3.0.tgz#e06ee47ce08e8b5b51d2be4ce7af0a2f716b00cc"
+  integrity sha512-nsHAKYsM2zlBuwf3rEHd9PBC3O6mOUU3Tr4xRsawLpxd/M7ao2hNykPm2nGbKJVpDMyrbLt4ftdeAWsp7AC0IQ==
   dependencies:
     "@ant-design/icons" "^4.4.0"
-    "@buerli.io/core" "0.3.0-beta.1"
+    "@buerli.io/core" "0.3.0"
     antd ">=4.15.3 <4.17"
     deepmerge "^4.2.2"
     lodash-es "^4.17.15"
@@ -1189,10 +1189,10 @@
   resolved "https://registry.yarnpkg.com/@chevrotain/utils/-/utils-10.1.2.tgz#d2fb7b968141139e5c2419553e5295382c265e7d"
   integrity sha512-bbZIpW6fdyf7FMaeDmw3cBbkTqsecxEkwlVKgVfqqXWBPLH6azxhPA2V9F7OhoZSVrsnMYw7QuyK6qutXPjEew==
 
-"@classcad/linux-x64@0.0.0-beta.12":
-  version "0.0.0-beta.12"
-  resolved "https://registry.yarnpkg.com/@classcad/linux-x64/-/linux-x64-0.0.0-beta.12.tgz#af6c250e20f1891593d0d20866a72a90a05b3a54"
-  integrity sha512-LMU3Cxp2fEBWcTIMBo8+tbP9V/MRr2K1Wsvz5bCeIAf8x5QhpFPQV60TiibJwlk6wJgPys+EBdCsavI1XKo5nw==
+"@classcad/linux-x64@0.0.0-beta.13":
+  version "0.0.0-beta.13"
+  resolved "https://registry.yarnpkg.com/@classcad/linux-x64/-/linux-x64-0.0.0-beta.13.tgz#438deebad891faec178d42643c939da5b5635737"
+  integrity sha512-eHq/EKLKKnWkQ/xrjZQmqk1CdOZlB9kBrsOKZeZLxxsy4XjkwTmo8agTKldeYVi4yYJQTOP576O5xuSlIFAnEw==
   dependencies:
     "@classcad/node" "10.2.0"
     yargs "15.4.1"
@@ -1234,10 +1234,10 @@
     bufferutil "4.x.x"
     utf-8-validate "5.x.x"
 
-"@classcad/windows-x64@0.0.0-beta.12":
-  version "0.0.0-beta.12"
-  resolved "https://registry.yarnpkg.com/@classcad/windows-x64/-/windows-x64-0.0.0-beta.12.tgz#d13936aac4393aab1f606aaebdabc4416b1f67f4"
-  integrity sha512-OB1R2Seujy2P0vPgJ5h5+RIDqhmdz63zPsRuTp26ZltcCculB5/9ehqukOAyawnRAcL2oEovymheOkas98hpww==
+"@classcad/windows-x64@0.0.0-beta.13":
+  version "0.0.0-beta.13"
+  resolved "https://registry.yarnpkg.com/@classcad/windows-x64/-/windows-x64-0.0.0-beta.13.tgz#c01146d134a498f2c2f86e5f1cdb72fcd3500f09"
+  integrity sha512-csKDyVc4CSyulOvAt8Keu7nf1dSUlamtXJp0PBAXdssNdBPtPhP3nZuudghOJEKh+BYoS6e3Z4dwDzm2v+vseA==
   dependencies:
     "@classcad/node" "10.2.0"
     yargs "15.4.1"
