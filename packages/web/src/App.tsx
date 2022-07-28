@@ -134,12 +134,14 @@ const App: React.FC = () => {
       </div>
       <div className="Container">
         <Canvas linear={true} dpr={[1, 2]} frameloop="demand" orthographic>
-          {drawingId && (
-            <Fit drawingId={drawingId}>
-              <BuerliGeometry drawingId={drawingId} selection={false} />
-              <Lights drawingId={drawingId} />
-            </Fit>
-          )}
+          <Fit>
+            {drawingId && (
+              <>
+                <BuerliGeometry drawingId={drawingId} selection={false} />
+                <Lights drawingId={drawingId} />
+              </>
+            )}
+          </Fit>
           <OrbitControls makeDefault minPolarAngle={0} maxPolarAngle={Math.PI / 2} />
           <ViewCube />
         </Canvas>

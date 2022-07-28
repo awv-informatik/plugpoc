@@ -1,4 +1,3 @@
-import { DrawingID } from '@buerli.io/core'
 import { Bounds, useBounds } from '@react-three/drei'
 import { useThree } from '@react-three/fiber'
 import React from 'react'
@@ -48,7 +47,7 @@ function DblClick() {
 /**
  * Fits three scene to its bounds.
  */
-export function Fit({ drawingId, children }: { drawingId: DrawingID; children?: React.ReactNode }) {
+export function Fit({ children }: { children?: React.ReactNode }) {
   return (
     <Bounds>
       {children}
