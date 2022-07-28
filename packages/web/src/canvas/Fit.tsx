@@ -1,28 +1,26 @@
-import { DrawingID, GeometryBounds } from '@buerli.io/core'
-import { useDrawing } from '@buerli.io/react'
+import { DrawingID } from '@buerli.io/core'
 import { Bounds, useBounds } from '@react-three/drei'
 import { useThree } from '@react-three/fiber'
 import React from 'react'
+import create, { GetState, SetState } from 'zustand'
 
-const EMPTYARR = [] as never[]
-
-const useIsLoading = (drawingId: DrawingID) => {
-  const pending = useDrawing(drawingId, d => d.cad.pending) || EMPTYARR
-  const loads = React.useMemo(() => {
-    return pending.filter(p => p.name === 'BaseModeler.Load' || p.name === 'BaseModeler.LoadFromUrl')
-  }, [pending])
-  return loads.length > 0
-}
+type StoreProps = { stamp: number; fit: () => void }
+const store = (set: SetState<StoreProps>, get: GetState<StoreProps>): StoreProps => ({
+  stamp: 0,
+  fit: () => set({ stamp: Date.now() }),
+})
+export const useFit = create<StoreProps>(store)
 
 /**
- * Fit to scene bounds if the ClassCAD geometry bounds changed.
+ * Fit to scene bounds if the user request by store.fit.
  */
-function Refresh({ ccBounds }: { ccBounds: GeometryBounds }) {
+function StampFit() {
   const bounds = useBounds()
+  const stamp = useFit(f => f.stamp)
 
   React.useEffect(() => {
     bounds?.refresh().clip().fit()
-  }, [bounds, ccBounds])
+  }, [bounds, stamp])
 
   return null
 }
@@ -51,14 +49,11 @@ function DblClick() {
  * Fits three scene to its bounds.
  */
 export function Fit({ drawingId, children }: { drawingId: DrawingID; children?: React.ReactNode }) {
-  const isLoading = useIsLoading(drawingId)
-  const ccBounds = useDrawing(drawingId, d => d.geometry.bounds) as GeometryBounds
-
   return (
     <Bounds>
       {children}
       <DblClick />
-      {isLoading && <Refresh ccBounds={ccBounds} />}
+      <StampFit />
     </Bounds>
   )
 }

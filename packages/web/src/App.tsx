@@ -4,7 +4,7 @@ import { BuerliGeometry, useBuerli } from '@buerli.io/react'
 import { OrbitControls } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import React from 'react'
-import { Fit } from './canvas/Fit'
+import { Fit, useFit } from './canvas/Fit'
 import Lights from './canvas/Lights'
 import { useExpressions } from './hooks/useExpressions'
 import './styles.css'
@@ -43,6 +43,7 @@ const Expressions: React.FC<{ drawingId: DrawingID; partId: ObjectID }> = props 
 
 const App: React.FC = () => {
   const drawingId = useBuerli(state => state.drawing.active)
+  const fit = useFit(f => f.fit)
   const activeNodes = React.useRef<ObjectID[]>([])
 
   const [ids, setIds] = React.useState({ assemblyId: 0, carrierId: 0, pinId: 0, sleeveId: 0 })
@@ -81,8 +82,9 @@ const App: React.FC = () => {
       ])
 
       setIds({ assemblyId: asmId || 0, carrierId: cId || 0, pinId: pId || 0, sleeveId: sId || 0 })
+      fit()
     })
-  }, [])
+  }, [fit])
 
   React.useEffect(() => {
     run(async api => {
