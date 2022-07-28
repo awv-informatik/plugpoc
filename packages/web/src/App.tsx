@@ -5,7 +5,8 @@ import { OrbitControls } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import React from 'react'
 import { Fit, useFit } from './canvas/Fit'
-import Lights from './canvas/Lights'
+import { Lights } from './canvas/Lights'
+import { ViewCube } from './canvas/ViewCube'
 import { useExpressions } from './hooks/useExpressions'
 import './styles.css'
 import { create } from './wrapper'
@@ -140,6 +141,7 @@ const App: React.FC = () => {
             </Fit>
           )}
           <OrbitControls makeDefault minPolarAngle={0} maxPolarAngle={Math.PI / 2} />
+          <ViewCube />
         </Canvas>
       </div>
     </div>

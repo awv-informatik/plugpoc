@@ -23,5 +23,3 @@ export function Lights({ drawingId }: { drawingId: DrawingID }) {
     </>
   ) : null
 }
-
-export default Lights
