@@ -11,11 +11,14 @@ import { useExpressions } from './hooks/useExpressions'
 import './styles.css'
 import { create } from './wrapper'
 
-const FILE_TYPE = 'of1'
+const OF1 = 'of1'
+const STP = 'stp'
 const BASE_URL = 'https://raw.githubusercontent.com/awv-informatik/plugpoc/main/models'
 const CARRIER_URL = `${BASE_URL}/Carrier.of1`
-const PIN_URL = `${BASE_URL}/Pin.of1`
-const SLEEVE_URL = `${BASE_URL}/Sleeve.of1`
+const PIN1_URL = `${BASE_URL}/1Pin.stp`
+const SLEEVE1_URL = `${BASE_URL}/1Sleeve.stp`
+// const PIN2_URL = `${BASE_URL}/2Pin.stp`
+// const SLEEVE2_URL = `${BASE_URL}/2Sleeve.stp`
 
 const { run } = create()
 
@@ -72,9 +75,9 @@ const App: React.FC = () => {
   React.useEffect(() => {
     run(async api => {
       const asmId = await api.createRootAssembly()
-      const cId = (await api.loadProductFromUrl(CARRIER_URL, FILE_TYPE))?.[0]
-      const pId = (await api.loadProductFromUrl(PIN_URL, FILE_TYPE))?.[0]
-      const sId = (await api.loadProductFromUrl(SLEEVE_URL, FILE_TYPE))?.[0]
+      const cId = (await api.loadProductFromUrl(CARRIER_URL, OF1))?.[0]
+      const pId = (await api.loadProductFromUrl(PIN1_URL, STP))?.[0]
+      const sId = (await api.loadProductFromUrl(SLEEVE1_URL, STP))?.[0]
 
       await api.addNode(cId!, asmId, [
         { x: 0, y: 0, z: 0 },
@@ -107,7 +110,7 @@ const App: React.FC = () => {
             productId: sleeveId,
             ownerId: assemblyId,
             transformation: [
-              { x: -first_pin_x + pin_dist_x * ix, y: first_pin_y - pin_dist_y * iy, z: 25 },
+              { x: -first_pin_x + pin_dist_x * ix, y: first_pin_y - pin_dist_y * iy, z: 50 },
               { x: 1, y: 0, z: 0 },
               { x: 0, y: 1, z: 0 },
             ],
@@ -127,10 +130,6 @@ const App: React.FC = () => {
         <h2>Plug POC</h2>
         <h3>Carrier</h3>
         {drawingId && ids.carrierId && <Expressions drawingId={drawingId} partId={ids.carrierId} />}
-        <h3>Pin</h3>
-        {drawingId && ids.pinId && <Expressions drawingId={drawingId} partId={ids.pinId} />}
-        <h3>Sleeve</h3>
-        {drawingId && ids.sleeveId && <Expressions drawingId={drawingId} partId={ids.sleeveId} />}
       </div>
       <div className="Container">
         <Canvas linear={true} dpr={[1, 2]} frameloop="demand" orthographic>
