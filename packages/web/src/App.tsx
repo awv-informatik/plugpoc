@@ -17,8 +17,8 @@ const BASE_URL = 'https://raw.githubusercontent.com/awv-informatik/plugpoc/main/
 const CARRIER_URL = `${BASE_URL}/Carrier.of1`
 const PIN1_URL = `${BASE_URL}/1Pin.stp`
 const SLEEVE1_URL = `${BASE_URL}/1Sleeve.stp`
-// const PIN2_URL = `${BASE_URL}/2Pin.stp`
-// const SLEEVE2_URL = `${BASE_URL}/2Sleeve.stp`
+const PIN2_URL = `${BASE_URL}/2Pin.stp`
+const SLEEVE2_URL = `${BASE_URL}/2Sleeve.stp`
 
 const { run } = create()
 
@@ -50,7 +50,14 @@ const App: React.FC = () => {
   const fit = useFit(f => f.fit)
   const activeNodes = React.useRef<ObjectID[]>([])
 
-  const [ids, setIds] = React.useState({ assemblyId: 0, carrierId: 0, pinId: 0, sleeveId: 0 })
+  const [ids, setIds] = React.useState({
+    assemblyId: 0,
+    carrierId: 0,
+    pin1Id: 0,
+    sleeve1Id: 0,
+    pin2Id: 0,
+    sleeve2Id: 0,
+  })
 
   const expressions = useExpressions(drawingId!, ids.carrierId)
   const {
@@ -61,7 +68,7 @@ const App: React.FC = () => {
     first_pin_y,
     pin_count_x,
     pin_count_y,
-    // pin_dia,
+    pin_dia,
     pin_dist_x,
     pin_dist_y,
   } = React.useMemo(() => {
@@ -74,10 +81,12 @@ const App: React.FC = () => {
 
   React.useEffect(() => {
     run(async api => {
-      const asmId = await api.createRootAssembly()
-      const cId = (await api.loadProductFromUrl(CARRIER_URL, OF1))?.[0]
-      const pId = (await api.loadProductFromUrl(PIN1_URL, STP))?.[0]
-      const sId = (await api.loadProductFromUrl(SLEEVE1_URL, STP))?.[0]
+      const asmId = (await api.createRootAssembly()) || 0
+      const cId = (await api.loadProductFromUrl(CARRIER_URL, OF1))?.[0] || 0
+      const p1Id = (await api.loadProductFromUrl(PIN1_URL, STP))?.[0] || 0
+      const s1Id = (await api.loadProductFromUrl(SLEEVE1_URL, STP))?.[0] || 0
+      const p2Id = (await api.loadProductFromUrl(PIN2_URL, STP))?.[0] || 0
+      const s2Id = (await api.loadProductFromUrl(SLEEVE2_URL, STP))?.[0] || 0
 
       await api.addNode(cId!, asmId, [
         { x: 0, y: 0, z: 0 },
@@ -85,14 +94,16 @@ const App: React.FC = () => {
         { x: 0, y: 1, z: 0 },
       ])
 
-      setIds({ assemblyId: asmId || 0, carrierId: cId || 0, pinId: pId || 0, sleeveId: sId || 0 })
+      setIds({ assemblyId: asmId, carrierId: cId, pin1Id: p1Id, sleeve1Id: s1Id, pin2Id: p2Id, sleeve2Id: s2Id })
       fit()
     })
   }, [fit])
 
   React.useEffect(() => {
     run(async api => {
-      const { assemblyId, pinId, sleeveId } = ids
+      const { assemblyId, pin1Id, sleeve1Id, pin2Id, sleeve2Id } = ids
+      const pinId = pin_dia < 2 ? pin1Id : pin2Id
+      const sleeveId = pin_dia < 2 ? sleeve1Id : sleeve2Id
       const nodes: { productId: ObjectID; ownerId: ObjectID; transformation: Transform }[] = []
       for (let ix = 0; ix < pin_count_x; ix++) {
         for (let iy = 0; iy < pin_count_y; iy++) {
@@ -122,7 +133,7 @@ const App: React.FC = () => {
       const added = await api.addNodes(...nodes)
       activeNodes.current = added || []
     })
-  }, [first_pin_x, first_pin_y, pin_count_x, pin_count_y, pin_dist_x, pin_dist_y, activeNodes, ids])
+  }, [first_pin_x, first_pin_y, pin_count_x, pin_count_y, pin_dist_x, pin_dist_y, activeNodes, ids, pin_dia])
 
   return (
     <div className="App">
