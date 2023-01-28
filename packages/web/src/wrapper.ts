@@ -6,8 +6,7 @@ import { ApiHistory, history } from '@buerli.io/headless'
 // Init connection between Buerli and ClassCAD //
 /////////////////////////////////////////////////
 
-//const CCSERVERURL = 'ws://localhost:8182'
-const CCSERVERURL = 'wss://tooling.server.classcad.ch'
+const CCSERVERURL = 'ws://localhost:5555'
 init(id => new SocketIOClient(CCSERVERURL, id), {
   config: { geometry: { points: { hidden: true }, edges: { color: 'black' } } },
 })

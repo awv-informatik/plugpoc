@@ -9,11 +9,11 @@
     "lint": "exit 0",
     "test": "exit 0",
     "start": "npm run start:windows",
-    "start:windows": "node ./node_modules/@classcad/windows-x64/bin.js --ip localhost --port 8182 --instances 1 --ccappfile ./BaseModeling.ccapp",
-    "start:linux": "node ./node_modules/@classcad/linux-x64/bin.js --ip 0.0.0.0 --port 8182 --instances 1 --ccappfile ./BaseModeling.ccapp"
+    "start:windows": "node ./node_modules/@classcad/windows-x64/bin.js --ip localhost --port 5555 --instances 1 --ccappfile ./BaseModeling.ccapp",
+    "start:linux": "node ./node_modules/@classcad/linux-x64/bin.js --ip 0.0.0.0 --port 5555 --instances 1 --ccappfile ./BaseModeling.ccapp"
   },
   "dependencies": {
-    "@classcad/windows-x64": "0.0.0-beta.15",
-    "@classcad/linux-x64": "0.0.0-beta.15"
+    "@classcad/windows-x64": "0.0.1",
+    "@classcad/linux-x64": "0.0.1"
   }
 }

@@ -35,7 +35,7 @@ const Expressions: React.FC<{ drawingId: DrawingID; partId: ObjectID }> = props 
             onBlur={e =>
               expr.value?.toString() !== e.target.value.toString() &&
               run(async api => {
-                api.setExpressions(partId, { name: expr.name, value: e.target.value })
+                api.setExpressions({ partId, members: [{ name: expr.name, value: e.target.value }] })
               })
             }
           />
@@ -82,17 +82,21 @@ const App: React.FC = () => {
   React.useEffect(() => {
     run(async api => {
       const asmId = (await api.createRootAssembly()) || 0
-      const cId = (await api.loadProductFromUrl(CARRIER_URL, OF1))?.[0] || 0
+      const cId = (await api.loadProductFromUrl(CARRIER_URL, OF1 as any))?.[0] || 0
       const p1Id = (await api.loadProductFromUrl(PIN1_URL, STP))?.[0] || 0
       const s1Id = (await api.loadProductFromUrl(SLEEVE1_URL, STP))?.[0] || 0
       const p2Id = (await api.loadProductFromUrl(PIN2_URL, STP))?.[0] || 0
       const s2Id = (await api.loadProductFromUrl(SLEEVE2_URL, STP))?.[0] || 0
 
-      await api.addNode(cId!, asmId, [
-        { x: 0, y: 0, z: 0 },
-        { x: 1, y: 0, z: 0 },
-        { x: 0, y: 1, z: 0 },
-      ])
+      await api.addNodes({
+        productId: cId!,
+        ownerId: asmId,
+        transformation: [
+          { x: 0, y: 0, z: 0 },
+          { x: 1, y: 0, z: 0 },
+          { x: 0, y: 1, z: 0 },
+        ],
+      })
 
       setIds({ assemblyId: asmId, carrierId: cId, pin1Id: p1Id, sleeve1Id: s1Id, pin2Id: p2Id, sleeve2Id: s2Id })
       fit()

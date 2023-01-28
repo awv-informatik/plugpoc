@@ -12,7 +12,7 @@ services:
     networks:
       - plugpoc-cad-network
     ports:
-      - 8182:8182 # ClassCAD Server
+      - 5555:5555 # ClassCAD Server
     restart: unless-stopped
 
 networks:

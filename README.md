@@ -31,7 +31,7 @@ If you are on Windows, you can start the classcad server from the root package.
 yarn start:cad
 ```
 
-The server should now be available at [http://localhost:8182](http://localhost:8182/status).
+The server should now be available at [http://localhost:5555](http://localhost:5555/status).
 
 ### Docker
 
@@ -40,7 +40,7 @@ You can also run the linux build of the ClassCAD Server in a Docker container. A
 docker compose -f "packages\cad\docker-compose.yml" up -d --build
 ```
 
-The server should now be available at [http://localhost:8182](http://localhost:8182/status).
+The server should now be available at [http://localhost:5555](http://localhost:5555/status).
 
 
 Stop the docker container again:
