@@ -1,13 +1,15 @@
-import { DrawingID, ObjectID } from '@buerli.io/core'
+import { DrawingID, ObjectID, ObjectIdent } from '@buerli.io/core'
 import { Transform } from '@buerli.io/headless'
 import { BuerliGeometry, useBuerli } from '@buerli.io/react'
 import { OrbitControls } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import React from 'react'
+import { v4 as uuidv4 } from 'uuid'
 import { Fit, useFit } from './canvas/Fit'
 import { Lights } from './canvas/Lights'
 import { ViewCube } from './canvas/ViewCube'
 import { useExpressions } from './hooks/useExpressions'
+import { useMappedId } from './hooks/useMappedId'
 import './styles.css'
 import { create } from './wrapper'
 
@@ -21,6 +23,13 @@ const PIN2_URL = `${BASE_URL}/2Pin.stp`
 const SLEEVE2_URL = `${BASE_URL}/2Sleeve.stp`
 
 const { run } = create()
+
+const rootIdent = uuidv4()
+const carrierIdent = uuidv4()
+const pin1Ident = uuidv4()
+const pin2Ident = uuidv4()
+const sleeve1Ident = uuidv4()
+const sleeve2Ident = uuidv4()
 
 const Expressions: React.FC<{ drawingId: DrawingID; partId: ObjectID }> = props => {
   const { drawingId, partId } = props
@@ -49,17 +58,10 @@ const App: React.FC = () => {
   const drawingId = useBuerli(state => state.drawing.active)
   const fit = useFit(f => f.fit)
   const activeNodes = React.useRef<ObjectID[]>([])
+  const [readyStamp, setReadyStamp] = React.useState(0)
 
-  const [ids, setIds] = React.useState({
-    assemblyId: 0,
-    carrierId: 0,
-    pin1Id: 0,
-    sleeve1Id: 0,
-    pin2Id: 0,
-    sleeve2Id: 0,
-  })
-
-  const expressions = useExpressions(drawingId!, ids.carrierId)
+  const carrierId = useMappedId(drawingId!, carrierIdent)
+  const expressions = useExpressions(drawingId!, carrierId!)
   const {
     // carrier_rect_depth,
     // carrier_rect_hight,
@@ -81,16 +83,16 @@ const App: React.FC = () => {
 
   React.useEffect(() => {
     run(async api => {
-      const asmId = (await api.createRootAssembly()) || 0
-      const cId = (await api.loadProductFromUrl(CARRIER_URL, OF1 as any))?.[0] || 0
-      const p1Id = (await api.loadProductFromUrl(PIN1_URL, STP))?.[0] || 0
-      const s1Id = (await api.loadProductFromUrl(SLEEVE1_URL, STP))?.[0] || 0
-      const p2Id = (await api.loadProductFromUrl(PIN2_URL, STP))?.[0] || 0
-      const s2Id = (await api.loadProductFromUrl(SLEEVE2_URL, STP))?.[0] || 0
+      await api.createRootAssembly('Assembly', { ident: rootIdent })
+      await api.loadProductFromUrl(CARRIER_URL, OF1 as any, { ident: carrierIdent })?.[0]
+      await api.loadProductFromUrl(PIN1_URL, STP, { ident: pin1Ident })?.[0]
+      await api.loadProductFromUrl(SLEEVE1_URL, STP, { ident: sleeve1Ident })?.[0]
+      await api.loadProductFromUrl(PIN2_URL, STP, { ident: pin2Ident })?.[0]
+      await api.loadProductFromUrl(SLEEVE2_URL, STP, { ident: sleeve2Ident })?.[0]
 
       await api.addNodes({
-        productId: cId!,
-        ownerId: asmId,
+        productId: carrierIdent,
+        ownerId: rootIdent,
         transformation: [
           { x: 0, y: 0, z: 0 },
           { x: 1, y: 0, z: 0 },
@@ -98,22 +100,25 @@ const App: React.FC = () => {
         ],
       })
 
-      setIds({ assemblyId: asmId, carrierId: cId, pin1Id: p1Id, sleeve1Id: s1Id, pin2Id: p2Id, sleeve2Id: s2Id })
+      setReadyStamp(Date.now())
       fit()
     })
   }, [fit])
 
   React.useEffect(() => {
     run(async api => {
-      const { assemblyId, pin1Id, sleeve1Id, pin2Id, sleeve2Id } = ids
-      const pinId = pin_dia < 2 ? pin1Id : pin2Id
-      const sleeveId = pin_dia < 2 ? sleeve1Id : sleeve2Id
-      const nodes: { productId: ObjectID; ownerId: ObjectID; transformation: Transform }[] = []
+      const toRemove = activeNodes.current.map(n => ({ referenceId: n }))
+      await api.removeNodes(...toRemove)
+
+      if (readyStamp <= 0) return // Use readyStamp to prevent hook dependency eslint error
+      const pinId = pin_dia < 2 ? pin1Ident : pin2Ident
+      const sleeveId = pin_dia < 2 ? sleeve1Ident : sleeve2Ident
+      const nodes: { productId: ObjectIdent; ownerId: ObjectIdent; transformation: Transform }[] = []
       for (let ix = 0; ix < pin_count_x; ix++) {
         for (let iy = 0; iy < pin_count_y; iy++) {
           nodes.push({
             productId: pinId,
-            ownerId: assemblyId,
+            ownerId: rootIdent,
             transformation: [
               { x: -first_pin_x + pin_dist_x * ix, y: first_pin_y - pin_dist_y * iy, z: 75 },
               { x: 1, y: 0, z: 0 },
@@ -123,7 +128,7 @@ const App: React.FC = () => {
 
           nodes.push({
             productId: sleeveId,
-            ownerId: assemblyId,
+            ownerId: rootIdent,
             transformation: [
               { x: -first_pin_x + pin_dist_x * ix, y: first_pin_y - pin_dist_y * iy, z: 50 },
               { x: 1, y: 0, z: 0 },
@@ -132,19 +137,19 @@ const App: React.FC = () => {
           })
         }
       }
-      const toRemove = activeNodes.current.map(n => ({ referenceId: n, ownerId: assemblyId }))
-      await api.removeNodes(...toRemove)
+
       const added = await api.addNodes(...nodes)
       activeNodes.current = added || []
+      console.info(activeNodes.current)
     })
-  }, [first_pin_x, first_pin_y, pin_count_x, pin_count_y, pin_dist_x, pin_dist_y, activeNodes, ids, pin_dia])
+  }, [first_pin_x, first_pin_y, pin_count_x, pin_count_y, pin_dist_x, pin_dist_y, activeNodes, readyStamp, pin_dia])
 
   return (
     <div className="App">
       <div style={{ zIndex: 10, position: 'absolute', top: '20px', left: '20px', paddingLeft: '50px' }}>
         <h2>Plug POC</h2>
         <h3>Carrier</h3>
-        {drawingId && ids.carrierId && <Expressions drawingId={drawingId} partId={ids.carrierId} />}
+        {drawingId && carrierId && <Expressions drawingId={drawingId} partId={carrierId} />}
       </div>
       <div className="Container">
         <Canvas linear={true} dpr={[1, 2]} frameloop="demand" orthographic>
