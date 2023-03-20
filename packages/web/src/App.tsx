@@ -140,7 +140,6 @@ const App: React.FC = () => {
 
       const added = await api.addNodes(...nodes)
       activeNodes.current = added || []
-      console.info(activeNodes.current)
     })
   }, [first_pin_x, first_pin_y, pin_count_x, pin_count_y, pin_dist_x, pin_dist_y, activeNodes, readyStamp, pin_dia])
 
