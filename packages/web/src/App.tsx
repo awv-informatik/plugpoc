@@ -5,7 +5,7 @@ import { OrbitControls } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import React from 'react'
 import { v4 as uuidv4 } from 'uuid'
-import { Fit, useFit } from './canvas/Fit'
+import { Fit } from './canvas/Fit'
 import { Lights } from './canvas/Lights'
 import { ViewCube } from './canvas/ViewCube'
 import { useExpressions } from './hooks/useExpressions'
@@ -56,7 +56,6 @@ const Expressions: React.FC<{ drawingId: DrawingID; partId: ObjectID }> = props 
 
 const App: React.FC = () => {
   const drawingId = useBuerli(state => state.drawing.active)
-  const fit = useFit(f => f.fit)
   const activeNodes = React.useRef<ObjectID[]>([])
   const [readyStamp, setReadyStamp] = React.useState(0)
 
@@ -101,9 +100,8 @@ const App: React.FC = () => {
       })
 
       setReadyStamp(Date.now())
-      fit()
     })
-  }, [fit])
+  }, [])
 
   React.useEffect(() => {
     run(async api => {
@@ -152,14 +150,12 @@ const App: React.FC = () => {
       </div>
       <div className="Container">
         <Canvas linear={true} dpr={[1, 2]} frameloop="demand" orthographic>
-          <Fit>
-            {drawingId && (
-              <>
-                <BuerliGeometry drawingId={drawingId} selection={false} />
-                <Lights drawingId={drawingId} />
-              </>
-            )}
-          </Fit>
+          {drawingId && (
+            <Fit drawingId={drawingId}>
+              <BuerliGeometry drawingId={drawingId} selection={false} />
+              <Lights drawingId={drawingId} />
+            </Fit>
+          )}
           <OrbitControls makeDefault minPolarAngle={0} maxPolarAngle={Math.PI / 2} />
           <ViewCube />
         </Canvas>

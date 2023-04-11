@@ -1,25 +1,42 @@
-import { Bounds, useBounds } from '@react-three/drei'
+import { DrawingID, GeometryBounds } from '@buerli.io/core'
+import { useBuerli, useDrawing } from '@buerli.io/react'
+import { Bounds, SizeProps, useBounds } from '@react-three/drei'
 import { useThree } from '@react-three/fiber'
 import React from 'react'
-import create, { GetState, SetState } from 'zustand'
 
-type StoreProps = { stamp: number; fit: () => void }
-const store = (set: SetState<StoreProps>, get: GetState<StoreProps>): StoreProps => ({
-  stamp: 0,
-  fit: () => set({ stamp: Date.now() }),
-})
-export const useFit = create<StoreProps>(store)
+const EMPTYARR = [] as never[]
+
+export const useIsLoading = (drawingId: DrawingID) => {
+  const pending = useDrawing(drawingId, d => d.cad.pending) || EMPTYARR
+  const loads = React.useMemo(() => {
+    return pending.filter(p => p.name.includes('.Load'))
+  }, [pending])
+  return loads.length > 0
+}
 
 /**
- * Fit to scene bounds if the user request by store.fit.
+ * Fit to scene bounds if the ClassCAD geometry bounds changed.
  */
-function StampFit() {
+function Refresh({ ccBounds }: { ccBounds: GeometryBounds }) {
   const bounds = useBounds()
-  const stamp = useFit(f => f.stamp)
 
   React.useEffect(() => {
     bounds?.refresh().clip().fit()
-  }, [bounds, stamp])
+  }, [bounds, ccBounds])
+
+  return null
+}
+
+/**
+ * Fit to scene bounds after the active drawing changed.
+ */
+function SwitchDrawing() {
+  const bounds = useBounds()
+  const currDrId = useBuerli(b => b.drawing.active) || ''
+
+  React.useEffect(() => {
+    bounds?.refresh().clip().fit()
+  }, [bounds, currDrId])
 
   return null
 }
@@ -47,12 +64,24 @@ function DblClick() {
 /**
  * Fits three scene to its bounds.
  */
-export function Fit({ children }: { children?: React.ReactNode }) {
+export function Fit({
+  drawingId,
+  children,
+  onFit,
+}: {
+  drawingId: DrawingID
+  children?: React.ReactNode
+  onFit?: (bounds: SizeProps) => void
+}) {
+  const isLoading = useIsLoading(drawingId)
+  const ccBounds = useDrawing(drawingId, d => d.geometry.bounds) as GeometryBounds
+
   return (
-    <Bounds>
+    <Bounds onFit={onFit}>
       {children}
       <DblClick />
-      <StampFit />
+      <SwitchDrawing />
+      {isLoading && <Refresh ccBounds={ccBounds} />}
     </Bounds>
   )
 }
